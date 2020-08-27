@@ -1,11 +1,11 @@
-package br.com.fiap.tds.view;
+package br.com.fiap.tds.exercicio02.view;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import br.com.fiap.tds.bean.Aluno;
+import br.com.fiap.tds.exercicio02.bean.Aluno;
 
 public class Exercicio02 {
 

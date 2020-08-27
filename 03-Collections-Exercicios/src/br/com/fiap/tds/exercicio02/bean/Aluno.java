@@ -1,4 +1,4 @@
-package br.com.fiap.tds.bean;
+package br.com.fiap.tds.exercicio02.bean;
 
 import java.util.List;
 

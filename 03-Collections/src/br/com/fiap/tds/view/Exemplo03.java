@@ -9,7 +9,7 @@ public class Exemplo03 {
 
 	public static void main(String[] args) {
 		//Instanciar um Mapa
-		Map mapa = new HashMap();
+		Map<String,String> mapa = new HashMap<String,String>();
 		
 		//Adiciona valores no mapa chave,valor
 		mapa.put("Acre", "Rio Branco");
@@ -34,15 +34,15 @@ public class Exemplo03 {
 		System.out.println("Possui o valor São Paulo: " + mapa.containsValue("São Paulo"));
 		
 		//Recuperar todas as chaves do mapa
-		Set chaves = mapa.keySet();
+		Set<String> chaves = mapa.keySet();
 		//Exibir todas as chaves
-		for (Object chave : chaves) {
+		for (String chave : chaves) {
 			System.out.println("Chave: " + chave + " - Valor: " + mapa.get(chave));
 		}
 		
 		//Recuperar todos os valores do mapa
-		Collection valores = mapa.values();
-		for (Object valor : valores) {
+		Collection<String> valores = mapa.values();
+		for (String valor : valores) {
 			System.out.println(valor);
 		}
 		

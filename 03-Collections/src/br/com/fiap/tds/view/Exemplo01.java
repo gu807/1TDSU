@@ -11,7 +11,7 @@ public class Exemplo01 {
 	public static void main(String[] args) {
 		
 		//Declarar uma lista de nomes e instanciar a lista
-		List nomes = new ArrayList();
+		List<String> nomes = new ArrayList<String>();
 		
 		//Adicionar dois nomes na lista
 		nomes.add("Kelly");
@@ -50,7 +50,7 @@ public class Exemplo01 {
 		}
 		
 		System.out.println("Foreach");
-		for (Object item : nomes) {
+		for (String item : nomes) {
 			System.out.println(item);
 		}
 		
@@ -60,7 +60,7 @@ public class Exemplo01 {
 		System.out.println("Total de elementos na lista " + nomes.size());
 		
 		//Obtem uma sublista da lista original 
-		List subLista = nomes.subList(0, 1); 
+		List<String> subLista = nomes.subList(0, 1); 
 		
 		//Transforma uma coleção em um vetor
 		Object[] vetor = nomes.toArray();

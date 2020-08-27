@@ -8,7 +8,7 @@ public class Exemplo02 {
 	public static void main(String[] args) {
 		
 		//Instanciar um Conjunto "Set"
-		Set conjunto = new HashSet();
+		Set<String> conjunto = new HashSet<String>();
 		
 		//Adicionar objetos no conjunto
 		conjunto.add("Segunda");
@@ -30,7 +30,7 @@ public class Exemplo02 {
 		System.out.println("O conjunto possui valores? " + conjunto.isEmpty());
 		
 		//Exibir todos os valores do conjunto
-		for (Object item : conjunto) {
+		for (String item : conjunto) {
 			System.out.println(item);
 		}
 	}
