@@ -6,9 +6,10 @@ public class Exemplo01 {
 
 	public static void main(String[] args) {
 
+		int op = Integer.parseInt(JOptionPane.showInputDialog("Digite um número"));
+
 		try {
 			// NumberFormatException -> Exception
-			int op = Integer.parseInt(JOptionPane.showInputDialog("Digite um número"));
 			System.out.println("Opção escolhida: " + op);
 
 			// NullPointerExceptions -> Exception

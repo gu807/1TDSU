@@ -8,14 +8,17 @@ import br.com.fiap.tds.service.DisciplinaService;
 
 public class ExemploDisciplina {
 
+		
 	public static void main(String[] args) {
+		
+		
 		
 		//Ler duas notas e chamar o método de calcular médias
 		
 		Scanner sc = new Scanner(System.in);
-		
+
 		try {
-		
+			
 			System.out.println("Digite a nota 1:");
 			float nota1 = sc.nextFloat();
 			System.out.println("Digite a nota 2:");

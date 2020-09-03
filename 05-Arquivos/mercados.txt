@@ -1,0 +1,3 @@
+FiapMarket,Av Lins de vasconcelos,123,4
+Wallmart,Av paulista,123123,1000
+Extra,Av 23 de maio,534234,1000
