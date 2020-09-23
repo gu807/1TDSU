@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.tds.bean.Funcionario;
+import br.com.fiap.tds.exception.FuncionarioNaoEncontradoException;
 import br.com.fiap.tds.factory.ConnectionFactory;
 
 /**
@@ -17,21 +18,80 @@ import br.com.fiap.tds.factory.ConnectionFactory;
  * @version 1.0
  */
 public class FuncionarioDao {
+	
+	/**
+	 * Remove um funcionário pelo código
+	 * @param id
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 * @throws FuncionarioNaoEncontradoException 
+	 */
+	public void remover(int id) 
+			throws ClassNotFoundException, SQLException, FuncionarioNaoEncontradoException {
+		//Obter a conexão
+		Connection conexao = ConnectionFactory.getConnection();
+		
+		//Prepared Statement
+		PreparedStatement stmt = conexao
+				.prepareStatement("DELETE FROM TB_FUNCIONARIO WHERE CD_FUNCIONARIO = ?");
+		
+		//Setar o código na query
+		stmt.setInt(1, id);
+		
+		//Executar a query
+		int qtd = stmt.executeUpdate();
+		
+		//Verifica se removeu um funcionário
+		if (qtd == 0)
+			throw new FuncionarioNaoEncontradoException();
+		
+		//Fechar
+		stmt.close();
+		conexao.close();
+	}
  
 	/**
 	 * Atualiza as informações do funcionário 
 	 * @param funcionario
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 * @throws FuncionarioNaoEncontradoException Funcionário não foi encontrado para atualização
 	 */
-	public void atualizar(Funcionario funcionario) {
+	public void atualizar(Funcionario funcionario) 
+			throws ClassNotFoundException, SQLException, FuncionarioNaoEncontradoException {
+			
+		//Verifica se o funcionário existe no banco
+		//Funcionario busca = pesquisar(funcionario.getCodigo());
+		//if (busca == null) {
+		//	throw new FuncionarioNaoEncontradoException();
+		//}
+
 		//Conexão com o banco
+		Connection conexao = ConnectionFactory.getConnection();
 		
 		//Prepared Statement
+		PreparedStatement stmt = conexao.prepareStatement("UPDATE TB_FUNCIONARIO SET"
+			+ " NM_FUNCIONARIO = ?, ST_ATIVO = ?, DT_NASCIMENTO =?, VL_SALARIO = ? WHERE CD_FUNCIONARIO = ?");
 		
 		//Passar os valores para a query
+		stmt.setString(1, funcionario.getNome());
+		stmt.setBoolean(2, funcionario.isAtivo());
+		stmt.setString(3, funcionario.getDataNascimento());
+		stmt.setDouble(4, funcionario.getSalario());
 		
-		//Executar a query
+		stmt.setInt(5, funcionario.getCodigo());
+		
+		//Executar a query (retorna a quantidade de linhas que foram modificadas)
+		int qtd = stmt.executeUpdate();
+		
+		//Verifica se modificou alguma linha no banco de dados
+		if (qtd == 0) {
+			throw new FuncionarioNaoEncontradoException();
+		}
 		
 		//Fechar a conexão
+		stmt.close();
+		conexao.close();
 	}
 	
 	/**
@@ -93,7 +153,9 @@ public class FuncionarioDao {
 		
 		//Executar 
 		ResultSet resultado = stmt.executeQuery();
-
+		
+		Funcionario funcionario = null;
+		
 		//Valida se encontrou o funcionário
 		if (resultado.next()) {
 			//Recuperar o resultado do result set
@@ -104,14 +166,15 @@ public class FuncionarioDao {
 			String data = resultado.getString("DT_NASCIMENTO");
 			
 			//Instanciar o funcionário
-			Funcionario funcionario = new Funcionario(cd, nome, ativo, salario, data);
-			
-			//Retornar o funcionário
-			return funcionario;
-			
-		}else {
-			return null;
+			funcionario = new Funcionario(cd, nome, ativo, salario, data);
 		}
+		
+		//Fechar
+		stmt.close();
+		conexao.close();		
+		
+		//Retornar o funcionário
+		return funcionario;
 	}
 	
 	/**
