@@ -19,6 +19,62 @@ import br.com.fiap.tds.factory.ConnectionFactory;
  */
 public class FuncionarioDao {
 	
+	//Método privado que recebe um ResultSet e retorna um objeto do tipo funcionário
+	private Funcionario parse(ResultSet resultado) throws SQLException {
+		
+		int codigo = resultado.getInt("CD_FUNCIONARIO");
+		String nome = resultado.getString("NM_FUNCIONARIO");
+		String data = resultado.getString("DT_NASCIMENTO");
+		boolean ativo = resultado.getBoolean("ST_ATIVO");
+		double salario = resultado.getDouble("VL_SALARIO");
+		
+		Funcionario funcionario = new Funcionario(codigo, nome, ativo, salario, data);
+		
+		return funcionario;
+	}
+	
+	
+	/**
+	 * Pesquisa os funcionários por parte do nome
+	 * @param nome
+	 * @return List<Funcionario> funcionários encontrados
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public List<Funcionario> buscarPorNome(String nome) throws ClassNotFoundException, SQLException{
+		//Obter a conexão
+		Connection conexao = ConnectionFactory.getConnection();
+		
+		//Prepared Statement
+		PreparedStatement stmt = conexao
+				.prepareStatement("SELECT * FROM TB_FUNCIONARIO WHERE NM_FUNCIONARIO like ?");
+		
+		//Passar o valor para a query
+		stmt.setString(1, "%" +  nome + "%");
+		
+		//Criar a lista de funcionários
+		List<Funcionario> lista = new ArrayList<Funcionario>();
+		
+		//Executar a query e obter os resultados
+		ResultSet resultado = stmt.executeQuery();
+		
+		//Percorrer os resultados
+		while (resultado.next()) {
+		
+			//Obter os dados das colunas
+			Funcionario funcionario = parse(resultado);
+			//Criar o objeto funcionário e adicionar na listar
+			lista.add(funcionario);
+		}
+		
+		//Fechar
+		stmt.close();
+		conexao.close();
+		
+		//Retornar a lista
+		return lista;
+	}
+	
 	/**
 	 * Remove um funcionário pelo código
 	 * @param id
@@ -114,16 +170,11 @@ public class FuncionarioDao {
 		
 		//Percorrer todos os registros encontrados
 		while(resultado.next()) {		
-			//Recuperar os dados do registro
-			int codigo = resultado.getInt("CD_FUNCIONARIO");
-			String nome = resultado.getString("NM_FUNCIONARIO");
-			String data = resultado.getString("DT_NASCIMENTO");
-			double salario = resultado.getDouble("VL_SALARIO");
-			boolean ativo = resultado.getBoolean("ST_ATIVO");
 			
-			//Instanciar o funcionário e adicionar na lista
-			Funcionario funcionario = new Funcionario(codigo, nome, ativo, salario, data);
+			//Chama o método que obtem o funcionário do resultset
+			Funcionario funcionario = parse(resultado);
 			lista.add(funcionario);
+			
 		}
 		
 		//Fechar
@@ -158,15 +209,10 @@ public class FuncionarioDao {
 		
 		//Valida se encontrou o funcionário
 		if (resultado.next()) {
-			//Recuperar o resultado do result set
-			String nome = resultado.getString("NM_FUNCIONARIO");
-			int cd = resultado.getInt("CD_FUNCIONARIO");
-			boolean ativo = resultado.getBoolean("ST_ATIVO");
-			double salario = resultado.getDouble("VL_SALARIO");
-			String data = resultado.getString("DT_NASCIMENTO");
+		
+			//Chamar o método que obtem o funcionário do resultset
+			funcionario = parse(resultado);
 			
-			//Instanciar o funcionário
-			funcionario = new Funcionario(cd, nome, ativo, salario, data);
 		}
 		
 		//Fechar

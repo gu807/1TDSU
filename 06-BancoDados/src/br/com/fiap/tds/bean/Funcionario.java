@@ -21,6 +21,11 @@ public class Funcionario {
 		this.salario = salario;
 		this.dataNascimento = dataNascimento;
 	}
+	
+	@Override
+	public String toString() {
+		return codigo + " " + nome + " " + ativo + " " + salario + " " + dataNascimento;
+	}
 
 	public int getCodigo() {
 		return codigo;
